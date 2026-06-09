@@ -10,10 +10,11 @@ import dotenv from 'dotenv';
 // Load Env
 dotenv.config();
 
+const isVercel = !!process.env.VERCEL;
+
 // Configs
 import { connectDB } from './config/db.js';
 import { connectRedis } from './config/redis.js';
-import { initSocket } from './config/socket.js';
 import { sseSubscribe } from './config/sse.js';
 
 // Middlewares
@@ -33,28 +34,37 @@ import messageRoutes from './routes/messageRoutes.js';
 import mediaRoutes from './routes/mediaRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 
-// BullMQ Workers (Import to start listening)
-import './queues/emailWorker.js';
-import './queues/notificationWorker.js';
-import './queues/feedWorker.js';
+// BullMQ Workers — only start in non-serverless environments
+if (!isVercel) {
+  await import('./queues/emailWorker.js');
+  await import('./queues/notificationWorker.js');
+  await import('./queues/feedWorker.js');
+}
 
-// Logger configuration
+// Logger configuration — no file transports on Vercel (read-only filesystem)
+const logTransports = [
+  new winston.transports.Console({
+    format: winston.format.combine(
+      winston.format.colorize(),
+      winston.format.simple()
+    )
+  })
+];
+
+if (!isVercel) {
+  logTransports.push(
+    new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
+    new winston.transports.File({ filename: 'logs/combined.log' })
+  );
+}
+
 winston.configure({
   level: 'info',
   format: winston.format.combine(
     winston.format.timestamp(),
     winston.format.json()
   ),
-  transports: [
-    new winston.transports.Console({
-      format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.simple()
-      )
-    }),
-    new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'logs/combined.log' })
-  ]
+  transports: logTransports
 });
 
 const app = express();
@@ -62,10 +72,10 @@ const server = http.createServer(app);
 
 // Basic Security & Parsing
 app.use(helmet({
-  contentSecurityPolicy: false // Disable CSP in dev for direct resource serving
+  contentSecurityPolicy: false
 }));
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: process.env.FRONTEND_URL || '*',
   credentials: true
 }));
 app.use(cookieParser());
@@ -75,7 +85,7 @@ app.use(morgan('combined', { stream: { write: (message) => winston.info(message.
 // API Rate Limiting
 app.use('/api', apiLimiter);
 
-// SSE Subscription Endpoint (Real-Time notification center / updates)
+// SSE Subscription Endpoint
 app.get('/api/events/subscribe', protect, sseSubscribe);
 
 // Mount API Routes
@@ -98,22 +108,25 @@ app.get('/health', (req, res) => {
 // Fallback Error Handler
 app.use(errorHandler);
 
-// Initialize WebSockets
-initSocket(server);
+// Socket.io — only in non-serverless environments
+if (!isVercel) {
+  const { initSocket } = await import('./config/socket.js');
+  initSocket(server);
+}
 
-// Asynchronous connection helper
+// Asynchronous DB & Redis connection
 const initServices = async () => {
   try {
     await connectDB();
     await connectRedis();
   } catch (err) {
-    winston.error(`Background services initialization failed: ${err.message}`);
+    winston.error(`Services init failed: ${err.message}`);
   }
 };
 initServices();
 
-// Start standalone HTTP listener if not on Vercel
-if (!process.env.VERCEL) {
+// Start HTTP listener only outside Vercel
+if (!isVercel) {
   const PORT = process.env.PORT || 5000;
   server.listen(PORT, () => {
     winston.info(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
@@ -121,3 +134,4 @@ if (!process.env.VERCEL) {
 }
 
 export default app;
+
