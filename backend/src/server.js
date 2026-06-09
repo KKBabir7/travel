@@ -60,59 +60,64 @@ winston.configure({
 const app = express();
 const server = http.createServer(app);
 
-// Connect Databases
-const startServer = async () => {
-  await connectDB();
-  await connectRedis();
+// Basic Security & Parsing
+app.use(helmet({
+  contentSecurityPolicy: false // Disable CSP in dev for direct resource serving
+}));
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  credentials: true
+}));
+app.use(cookieParser());
+app.use(express.json());
+app.use(morgan('combined', { stream: { write: (message) => winston.info(message.trim()) } }));
 
-  // Basic Security & Parsing
-  app.use(helmet({
-    contentSecurityPolicy: false // Disable CSP in dev for direct resource serving
-  }));
-  app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-    credentials: true
-  }));
-  app.use(cookieParser());
-  app.use(express.json());
-  app.use(morgan('combined', { stream: { write: (message) => winston.info(message.trim()) } }));
+// API Rate Limiting
+app.use('/api', apiLimiter);
 
-  // API Rate Limiting
-  app.use('/api', apiLimiter);
+// SSE Subscription Endpoint (Real-Time notification center / updates)
+app.get('/api/events/subscribe', protect, sseSubscribe);
 
-  // SSE Subscription Endpoint (Real-Time notification center / updates)
-  app.get('/api/events/subscribe', protect, sseSubscribe);
+// Mount API Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/profiles', profileRoutes);
+app.use('/api/posts', postRoutes);
+app.use('/api/journals', journalRoutes);
+app.use('/api/groups', groupRoutes);
+app.use('/api/events', eventRoutes);
+app.use('/api/blogs', blogRoutes);
+app.use('/api/messages', messageRoutes);
+app.use('/api/media', mediaRoutes);
+app.use('/api/admin', adminRoutes);
 
-  // Mount API Routes
-  app.use('/api/auth', authRoutes);
-  app.use('/api/profiles', profileRoutes);
-  app.use('/api/posts', postRoutes);
-  app.use('/api/journals', journalRoutes);
-  app.use('/api/groups', groupRoutes);
-  app.use('/api/events', eventRoutes);
-  app.use('/api/blogs', blogRoutes);
-  app.use('/api/messages', messageRoutes);
-  app.use('/api/media', mediaRoutes);
-  app.use('/api/admin', adminRoutes);
+// Health check
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK', timestamp: new Date() });
+});
 
-  // Health check
-  app.get('/health', (req, res) => {
-    res.status(200).json({ status: 'OK', timestamp: new Date() });
-  });
+// Fallback Error Handler
+app.use(errorHandler);
 
-  // Fallback Error Handler
-  app.use(errorHandler);
+// Initialize WebSockets
+initSocket(server);
 
-  // Initialize WebSockets
-  initSocket(server);
+// Asynchronous connection helper
+const initServices = async () => {
+  try {
+    await connectDB();
+    await connectRedis();
+  } catch (err) {
+    winston.error(`Background services initialization failed: ${err.message}`);
+  }
+};
+initServices();
 
+// Start standalone HTTP listener if not on Vercel
+if (!process.env.VERCEL) {
   const PORT = process.env.PORT || 5000;
   server.listen(PORT, () => {
     winston.info(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
   });
-};
+}
 
-startServer().catch((err) => {
-  winston.error(`Server bootstrap failed: ${err.message}`);
-  process.exit(1);
-});
+export default app;
