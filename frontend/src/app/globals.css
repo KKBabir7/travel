@@ -651,3 +651,84 @@ h1, h2, h3, h4, h5, h6 {
   transform: translateY(-2px) !important;
 }
 
+/* Responsive media query to hide alphabet arrows on large screens */
+@media (min-width: 1092px) {
+  .light-theme-landing .alphabet-arrows {
+    display: none !important;
+  }
+}
+
+/* Responsive container: fluid < 1240px, centered container >= 1240px */
+.light-theme-landing .responsive-body-container {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  background-color: #ffffff !important;
+}
+
+@media (min-width: 1240px) {
+  .light-theme-landing .responsive-body-container {
+    max-width: 1200px !important;
+  }
+}
+
+/* Custom Alphabet Bar styling for Places & Events */
+.light-theme-landing .alphabet-scroll-container {
+  display: flex !important;
+  overflow-x: auto !important;
+  align-items: center !important;
+  flex-grow: 1 !important;
+  scrollbar-width: none !important;
+  justify-content: safe center !important;
+  gap: 2px !important;
+}
+
+.light-theme-landing .alphabet-scroll-container::-webkit-scrollbar {
+  display: none !important;
+}
+
+.light-theme-landing .alphabet-btn {
+  padding: 0 !important;
+  text-decoration: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-weight: 700 !important;
+  flex-shrink: 0 !important;
+  border-radius: 4px !important;
+  font-size: 0.6rem !important;
+  transition: all 0.2s !important;
+  cursor: pointer !important;
+  height: 18px !important;
+}
+
+.light-theme-landing .alphabet-btn-letter {
+  min-width: 15px !important;
+}
+
+.light-theme-landing .alphabet-btn-all {
+  min-width: 22px !important;
+}/* Increase size and spacing slightly in desktop version */
+@media (min-width: 992px) {
+  .light-theme-landing .alphabet-scroll-container {
+    gap: 4px !important;
+  }
+  
+  .light-theme-landing .alphabet-btn {
+    font-size: 0.62rem !important;
+    height: 20px !important;
+  }
+  
+  .light-theme-landing .alphabet-btn-letter {
+    min-width: 16px !important;
+  }
+  
+  .light-theme-landing .alphabet-btn-all {
+    min-width: 24px !important;
+  }
+}
+
+/* Explicitly remove border radius from Connect button in Members card to override global landing page button styles */
+.light-theme-landing .member-connect-btn {
+  border-radius: 0px !important;
+}

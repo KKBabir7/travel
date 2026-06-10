@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { Container, Row, Col, Card, Button, Form, Tabs, Tab, Modal, Spinner, Alert, Navbar, Nav, InputGroup, Offcanvas } from 'react-bootstrap';
@@ -116,51 +116,51 @@ function LandingPageContent() {
   const renderSidebarContent = () => (
     <div className="d-flex flex-column gap-4">
       {/* Place of the Week */}
-      <Card className="glass-card text-dark overflow-hidden shadow-sm">
+      <Card className="glass-card text-dark overflow-hidden shadow-sm" style={{ borderRadius: '0px' }}>
         <div style={{ height: '140px', backgroundImage: 'url("https://images.unsplash.com/photo-1598971861713-54ad16a7e72e?auto=format&fit=crop&w=400&q=80")', backgroundSize: 'cover', backgroundPosition: 'center' }} />
         <Card.Body className="p-3">
           <div className="d-flex align-items-center justify-content-between mb-2">
-            <span className="badge bg-opacity-20 text-info border border-info border-opacity-30 small text-uppercase" style={{ backgroundColor: 'rgba(14, 165, 233, 0.15)', fontSize: '0.75rem' }}>Place of The Week</span>
+            <span className="badge bg-opacity-20 text-info border border-info border-opacity-30 small text-uppercase" style={{ backgroundColor: 'rgba(14, 165, 233, 0.15)', fontSize: '0.55rem' }}>Place of The Week</span>
             <div className="d-flex text-warning" style={{ fontSize: '11px' }}>
               {[...Array(5)].map((_, i) => <FaStar key={i} />)}
             </div>
           </div>
-          <h5 className="fw-bold font-heading mb-1 text-dark">Shahid Minar</h5>
+          <h5 className="fw-bold font-heading mb-1 text-dark" style={{ fontSize: '16px' }}>Shahid Minar</h5>
           <Card.Text className="small text-secondary m-0">A historic monument located in the heart of Dhaka, Bangladesh, representing structural beauty.</Card.Text>
         </Card.Body>
       </Card>
 
       {/* Event of the Week */}
-      <Card className="glass-card text-dark overflow-hidden shadow-sm">
+      <Card className="glass-card text-dark overflow-hidden shadow-sm" style={{ borderRadius: '0px' }}>
         <div style={{ height: '140px', backgroundImage: 'url("https://images.unsplash.com/photo-1561489422-45e390d50680?auto=format&fit=crop&w=400&q=80")', backgroundSize: 'cover', backgroundPosition: 'center' }} />
         <Card.Body className="p-3">
           <div className="d-flex align-items-center justify-content-between mb-2">
-            <span className="badge bg-opacity-20 text-warning border border-warning border-opacity-30 small text-uppercase" style={{ backgroundColor: 'rgba(245, 158, 11, 0.15)', fontSize: '0.75rem' }}>Event of The Week</span>
+            <span className="badge bg-opacity-20 text-warning border border-warning border-opacity-30 small text-uppercase" style={{ backgroundColor: 'rgba(245, 158, 11, 0.15)', fontSize: '0.55rem' }}>Event of The Week</span>
             <div className="d-flex text-warning" style={{ fontSize: '11px' }}>
               {[...Array(5)].map((_, i) => <FaStar key={i} />)}
             </div>
           </div>
-          <h5 className="fw-bold font-heading mb-1 text-dark">Pohela Boisak</h5>
+          <h5 className="fw-bold font-heading mb-1 text-dark" style={{ fontSize: '16px' }}>Pohela Boisak</h5>
           <Card.Text className="small text-secondary m-0">Celebrating the Bengali New Year with vibrant colors, parades, and cultural performances.</Card.Text>
         </Card.Body>
       </Card>
 
       {/* Picture of the Week */}
-      <Card className="glass-card text-dark overflow-hidden shadow-sm">
+      <Card className="glass-card text-dark overflow-hidden shadow-sm" style={{ borderRadius: '0px' }}>
         <div style={{ height: '140px', backgroundImage: 'url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80")', backgroundSize: 'cover', backgroundPosition: 'center' }} />
         <Card.Body className="p-3">
-          <span className="badge bg-opacity-20 text-success border border-success border-opacity-30 small text-uppercase mb-2 d-inline-block" style={{ backgroundColor: 'rgba(16, 185, 129, 0.15)', fontSize: '0.75rem' }}>Picture of The Week</span>
-          <h5 className="fw-bold font-heading mb-1 text-dark">Tropical Paradise</h5>
+          <span className="badge bg-opacity-20 text-success border border-success border-opacity-30 small text-uppercase mb-2 d-inline-block" style={{ backgroundColor: 'rgba(16, 185, 129, 0.15)', fontSize: '0.55rem' }}>Picture of The Week</span>
+          <h5 className="fw-bold font-heading mb-1 text-dark" style={{ fontSize: '16px' }}>Tropical Paradise</h5>
           <Card.Text className="small text-secondary m-0">A breathtaking landscape capture of St. Martin island beach at high tide.</Card.Text>
         </Card.Body>
       </Card>
 
       {/* Story of the Week */}
-      <Card className="glass-card text-dark overflow-hidden shadow-sm">
+      <Card className="glass-card text-dark overflow-hidden shadow-sm" style={{ borderRadius: '0px' }}>
         <div style={{ height: '140px', backgroundImage: 'url("https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=400&q=80")', backgroundSize: 'cover', backgroundPosition: 'center' }} />
         <Card.Body className="p-3">
-          <span className="badge bg-opacity-20 text-danger border border-danger border-opacity-30 small text-uppercase mb-2 d-inline-block" style={{ backgroundColor: 'rgba(244, 63, 94, 0.15)', fontSize: '0.75rem' }}>Story of The Week</span>
-          <h5 className="fw-bold font-heading mb-1 text-dark">Backpacking Euro-Trip</h5>
+          <span className="badge bg-opacity-20 text-danger border border-danger border-opacity-30 small text-uppercase mb-2 d-inline-block" style={{ backgroundColor: 'rgba(244, 63, 94, 0.15)', fontSize: '0.55rem' }}>Story of The Week</span>
+          <h5 className="fw-bold font-heading mb-1 text-dark" style={{ fontSize: '16px' }}>Backpacking Euro-Trip</h5>
           <Card.Text className="small text-secondary m-0">"Traveling through 5 countries in 15 days with just a 40L backpack..."</Card.Text>
         </Card.Body>
       </Card>
@@ -207,13 +207,22 @@ function LandingPageContent() {
     { name: 'Jhum Festival', location: 'Bandarban', time: '2 days', img: 'https://images.unsplash.com/photo-1507608869274-d3177c8bb4c7?auto=format&fit=crop&w=350&h=230&q=80' }
   ];
 
+  // Memoize shuffled lists so they only shuffle once when component mounts and don't re-shuffle on every render
+  const shuffledPlaces = useMemo(() => {
+    return [...placesList].sort(() => Math.random() - 0.5);
+  }, []);
+
+  const shuffledEvents = useMemo(() => {
+    return [...eventsList].sort(() => Math.random() - 0.5);
+  }, []);
+
   // Dynamic filter lists
   const filteredPlaces = selectedPlaceLetter === 'All'
-    ? [...placesList].sort(() => Math.random() - 0.5)
+    ? shuffledPlaces
     : placesList.filter(place => place.name.toLowerCase().startsWith(selectedPlaceLetter.toLowerCase()));
 
   const filteredEvents = selectedEventLetter === 'All'
-    ? [...eventsList].sort(() => Math.random() - 0.5)
+    ? shuffledEvents
     : eventsList.filter(ev => ev.name.toLowerCase().startsWith(selectedEventLetter.toLowerCase()));
 
   // Members pictures list
@@ -243,8 +252,8 @@ function LandingPageContent() {
       {/* Top landing navbar */}
       <Navbar expand="lg" className="sticky-top py-2 px-0 glass-panel" style={{ zIndex: 1030 }}>
         <Container fluid className="px-4">
-          <Navbar.Brand onClick={() => router.push('/')} style={{ cursor: 'pointer' }} className="fw-bold text-gradient fs-4 font-heading d-flex align-items-center gap-2 text-nowrap">
-            <FaCompass className="text-info" /> IncredibleBD
+          <Navbar.Brand onClick={() => router.push('/')} style={{ cursor: 'pointer' }} className="d-flex align-items-center gap-2 text-nowrap">
+            <img src="/logo/logo.png" alt="IncredibleBD Logo" style={{ height: '32px', width: 'auto', objectFit: 'contain' }} />
           </Navbar.Brand>
           
           <Navbar.Toggle aria-controls="landing-nav" />
@@ -347,9 +356,11 @@ function LandingPageContent() {
         </Container>
       </div>
 
-      {/* Landing Body Grid */}
-      <Container fluid className="py-4 px-4 flex-grow-1" style={{ backgroundColor: '#ffffff' }}>
-        <Row className="g-4">
+      {/* Responsive Body Content Wrapper */}
+      <div className="responsive-body-container flex-grow-1" style={{ backgroundColor: '#ffffff' }}>
+        {/* Landing Body Grid */}
+        <div className="py-4 px-4">
+          <Row className="g-4">
           {/* Left Sidebar Cards (25% Width / 3 Columns) */}
           <Col lg={3} className="d-none d-lg-block">
             <div className="sticky-top" style={{ top: '130px', zIndex: 10 }}>
@@ -375,37 +386,27 @@ function LandingPageContent() {
                   {/* Alphabet scroll area */}
                   <div 
                     ref={placeAlphaRef}
-                    className="d-flex overflow-x-auto scrollbar-none align-items-center flex-grow-1" 
-                    style={{ scrollbarWidth: 'none', gap: '2px' }}
+                    className="alphabet-scroll-container" 
                   >
                     {/* All button */}
                     <Button
                       variant="link"
-                      className="p-0 text-decoration-none d-flex align-items-center justify-content-center fw-bold"
+                      className="alphabet-btn alphabet-btn-all"
                       style={{
-                        minWidth: '30px',
-                        height: '24px',
-                        borderRadius: '5px',
-                        fontSize: '0.72rem',
                         color: selectedPlaceLetter === 'All' ? '#ffffff' : '#475569',
                         backgroundColor: selectedPlaceLetter === 'All' ? '#0ea5e9' : 'transparent',
-                        border: selectedPlaceLetter === 'All' ? '1px solid #0ea5e9' : '1px solid transparent',
-                        transition: 'all 0.2s'
+                        border: selectedPlaceLetter === 'All' ? '1px solid #0ea5e9' : '1px solid transparent'
                       }}
                       onClick={() => setSelectedPlaceLetter('All')}
                     >All</Button>
                     {alphabet.map(letter => {
-                      const isDisabled = letter === 'Y' || letter === 'Z';
+                      const isDisabled = false;
                       return (
                         <Button 
                           key={letter}
                           variant="link"
-                          className="p-0 text-decoration-none d-flex align-items-center justify-content-center fw-bold"
+                          className="alphabet-btn alphabet-btn-letter"
                           style={{
-                            minWidth: '24px',
-                            height: '24px',
-                            borderRadius: '5px',
-                            fontSize: '0.72rem',
                             color: isDisabled 
                               ? '#94a3b8' 
                               : (selectedPlaceLetter === letter ? '#ffffff' : '#475569'),
@@ -417,16 +418,16 @@ function LandingPageContent() {
                               : '1px solid transparent',
                             textDecoration: isDisabled ? 'line-through' : 'none',
                             cursor: isDisabled ? 'not-allowed' : 'pointer',
-                            opacity: isDisabled ? 0.4 : 1,
-                            transition: 'all 0.2s'
+                            opacity: isDisabled ? 0.4 : 1
                           }}
                           onClick={() => { if (!isDisabled) setSelectedPlaceLetter(letter); }}
                         >{letter}</Button>
                       );
                     })}
                   </div>
+
                   {/* Alphabet scroll arrows */}
-                  <div className="d-flex gap-1 flex-shrink-0">
+                  <div className="d-flex gap-1 flex-shrink-0 alphabet-arrows">
                     <Button 
                       variant="link"
                       onClick={() => scrollAlphabet(placeAlphaRef, 'left')}
@@ -467,6 +468,7 @@ function LandingPageContent() {
               ) : (
                 <div className="position-relative">
                   <Swiper
+                    key="places-swiper-6col"
                     modules={[Navigation, Grid]}
                     navigation={{ prevEl: placesPrevRef.current, nextEl: placesNextRef.current }}
                     onSwiper={(swiper) => {
@@ -482,35 +484,43 @@ function LandingPageContent() {
                     }}
                     grid={{ rows: 2, fill: 'row' }}
                     spaceBetween={14}
-                    slidesPerView={2}
+                    slidesPerView={6}
                     breakpoints={{
-                      576: { slidesPerView: 2, grid: { rows: 2, fill: 'row' } },
-                      768: { slidesPerView: 3, grid: { rows: 2, fill: 'row' } },
-                      992: { slidesPerView: 4, grid: { rows: 2, fill: 'row' } }
+                      0: { slidesPerView: 2, grid: { rows: 2, fill: 'row' } },
+                      576: { slidesPerView: 3, grid: { rows: 2, fill: 'row' } },
+                      768: { slidesPerView: 4, grid: { rows: 2, fill: 'row' } },
+                      992: { slidesPerView: 6, grid: { rows: 2, fill: 'row' } }
                     }}
                     className="places-grid-swiper"
                   >
                     {filteredPlaces.map((place, idx) => (
                       <SwiperSlide key={idx}>
-                        <motion.div whileHover={{ y: -4 }} style={{ height: '100%' }}>
-                          <Card 
-                            onClick={() => router.push('/login')}
-                            className="glass-card text-dark h-100 overflow-hidden shadow-sm"
-                            style={{ cursor: 'pointer' }}
-                          >
-                            <div style={{ height: '120px', backgroundImage: `url(${place.img})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
-                            <Card.Body className="p-3 d-flex flex-column">
-                              <h6 className="fw-bold font-heading mb-1 text-dark text-truncate">{place.name}</h6>
-                              <div className="text-secondary mb-2" style={{ fontSize: '0.8rem' }}>({place.location})</div>
-                              <div className="d-flex text-warning mb-2" style={{ fontSize: '11px' }}>
-                                {[...Array(5)].map((_, i) => <FaStar key={i} />)}
-                              </div>
-                              <div className="small text-info d-flex align-items-center gap-1 mt-auto" style={{ fontSize: '0.8rem', fontWeight: '500' }}>
-                                <FaRegClock /> {place.time}
-                              </div>
-                            </Card.Body>
-                          </Card>
-                        </motion.div>
+                        <div 
+                          onClick={() => router.push('/login')}
+                          className="text-dark d-flex flex-column h-100 cursor-pointer mx-auto"
+                          style={{ cursor: 'pointer', width: '140px' }}
+                        >
+                          <div 
+                            className="mb-2" 
+                            style={{ 
+                              height: '100px', 
+                              width: '140px',
+                              backgroundImage: `url(${place.img})`, 
+                              backgroundSize: 'cover', 
+                              backgroundPosition: 'center',
+                              borderRadius: '0px'
+                            }} 
+                          />
+                          <div className="d-flex text-warning mb-1" style={{ fontSize: '8px' }}>
+                            {[...Array(5)].map((_, i) => <FaStar key={i} style={{ fontSize: '8px' }} />)}
+                          </div>
+                          <h6 className="fw-bold font-heading mb-1 text-dark text-truncate" style={{ fontSize: '0.6rem', lineHeight: '1.2' }}>
+                            {place.name} <span className="text-secondary fw-normal">({place.location})</span>
+                          </h6>
+                          <div className="text-muted d-flex align-items-center gap-1 mt-1" style={{ fontSize: '0.55rem', fontWeight: '500' }}>
+                            <FaRegClock style={{ fontSize: '0.55rem' }} /> {place.time}
+                          </div>
+                        </div>
                       </SwiperSlide>
                     ))}
                   </Swiper>
@@ -536,37 +546,27 @@ function LandingPageContent() {
                   {/* Alphabet scroll area */}
                   <div 
                     ref={eventAlphaRef}
-                    className="d-flex overflow-x-auto scrollbar-none align-items-center flex-grow-1"
-                    style={{ scrollbarWidth: 'none', gap: '2px' }}
+                    className="alphabet-scroll-container" 
                   >
                     {/* All button */}
                     <Button
                       variant="link"
-                      className="p-0 text-decoration-none d-flex align-items-center justify-content-center fw-bold"
+                      className="alphabet-btn alphabet-btn-all"
                       style={{
-                        minWidth: '30px',
-                        height: '24px',
-                        borderRadius: '5px',
-                        fontSize: '0.72rem',
                         color: selectedEventLetter === 'All' ? '#ffffff' : '#475569',
                         backgroundColor: selectedEventLetter === 'All' ? '#f59e0b' : 'transparent',
-                        border: selectedEventLetter === 'All' ? '1px solid #f59e0b' : '1px solid transparent',
-                        transition: 'all 0.2s'
+                        border: selectedEventLetter === 'All' ? '1px solid #f59e0b' : '1px solid transparent'
                       }}
                       onClick={() => setSelectedEventLetter('All')}
                     >All</Button>
                     {alphabet.map(letter => {
-                      const isDisabled = letter === 'Y' || letter === 'Z';
+                      const isDisabled = false;
                       return (
                         <Button 
                           key={letter}
                           variant="link"
-                          className="p-0 text-decoration-none d-flex align-items-center justify-content-center fw-bold"
+                          className="alphabet-btn alphabet-btn-letter"
                           style={{
-                            minWidth: '24px',
-                            height: '24px',
-                            borderRadius: '5px',
-                            fontSize: '0.72rem',
                             color: isDisabled 
                               ? '#94a3b8' 
                               : (selectedEventLetter === letter ? '#ffffff' : '#475569'),
@@ -578,16 +578,16 @@ function LandingPageContent() {
                               : '1px solid transparent',
                             textDecoration: isDisabled ? 'line-through' : 'none',
                             cursor: isDisabled ? 'not-allowed' : 'pointer',
-                            opacity: isDisabled ? 0.4 : 1,
-                            transition: 'all 0.2s'
+                            opacity: isDisabled ? 0.4 : 1
                           }}
                           onClick={() => { if (!isDisabled) setSelectedEventLetter(letter); }}
                         >{letter}</Button>
                       );
                     })}
                   </div>
+
                   {/* Alphabet scroll arrows */}
-                  <div className="d-flex gap-1 flex-shrink-0">
+                  <div className="d-flex gap-1 flex-shrink-0 alphabet-arrows">
                     <Button 
                       variant="link"
                       onClick={() => scrollAlphabet(eventAlphaRef, 'left')}
@@ -628,6 +628,7 @@ function LandingPageContent() {
               ) : (
                 <div className="position-relative">
                   <Swiper
+                    key="events-swiper-6col"
                     modules={[Navigation, Grid]}
                     navigation={{ prevEl: eventsPrevRef.current, nextEl: eventsNextRef.current }}
                     onSwiper={(swiper) => {
@@ -643,35 +644,43 @@ function LandingPageContent() {
                     }}
                     grid={{ rows: 2, fill: 'row' }}
                     spaceBetween={14}
-                    slidesPerView={2}
+                    slidesPerView={6}
                     breakpoints={{
-                      576: { slidesPerView: 2, grid: { rows: 2, fill: 'row' } },
-                      768: { slidesPerView: 3, grid: { rows: 2, fill: 'row' } },
-                      992: { slidesPerView: 4, grid: { rows: 2, fill: 'row' } }
+                      0: { slidesPerView: 2, grid: { rows: 2, fill: 'row' } },
+                      576: { slidesPerView: 3, grid: { rows: 2, fill: 'row' } },
+                      768: { slidesPerView: 4, grid: { rows: 2, fill: 'row' } },
+                      992: { slidesPerView: 6, grid: { rows: 2, fill: 'row' } }
                     }}
                     className="events-grid-swiper"
                   >
                     {filteredEvents.map((ev, idx) => (
                       <SwiperSlide key={idx}>
-                        <motion.div whileHover={{ y: -4 }} style={{ height: '100%' }}>
-                          <Card 
-                            onClick={() => router.push('/login')}
-                            className="glass-card text-dark h-100 overflow-hidden shadow-sm"
-                            style={{ cursor: 'pointer' }}
-                          >
-                            <div style={{ height: '120px', backgroundImage: `url(${ev.img})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
-                            <Card.Body className="p-3 d-flex flex-column">
-                              <h6 className="fw-bold font-heading mb-1 text-dark text-truncate">{ev.name}</h6>
-                              <div className="text-secondary mb-2" style={{ fontSize: '0.8rem' }}>({ev.location})</div>
-                              <div className="d-flex text-warning mb-2" style={{ fontSize: '11px' }}>
-                                {[...Array(5)].map((_, i) => <FaStar key={i} />)}
-                              </div>
-                              <div className="small text-info d-flex align-items-center gap-1 mt-auto" style={{ fontSize: '0.8rem', fontWeight: '500' }}>
-                                <FaRegClock /> {ev.time}
-                              </div>
-                            </Card.Body>
-                          </Card>
-                        </motion.div>
+                        <div 
+                          onClick={() => router.push('/login')}
+                          className="text-dark d-flex flex-column h-100 cursor-pointer mx-auto"
+                          style={{ cursor: 'pointer', width: '140px' }}
+                        >
+                          <div 
+                            className="mb-2" 
+                            style={{ 
+                              height: '100px', 
+                              width: '140px',
+                              backgroundImage: `url(${ev.img})`, 
+                              backgroundSize: 'cover', 
+                              backgroundPosition: 'center',
+                              borderRadius: '0px'
+                            }} 
+                          />
+                          <div className="d-flex text-warning mb-1" style={{ fontSize: '8px' }}>
+                            {[...Array(5)].map((_, i) => <FaStar key={i} style={{ fontSize: '8px' }} />)}
+                          </div>
+                          <h6 className="fw-bold font-heading mb-1 text-dark text-truncate" style={{ fontSize: '0.6rem', lineHeight: '1.2' }}>
+                            {ev.name} <span className="text-secondary fw-normal">({ev.location})</span>
+                          </h6>
+                          <div className="text-muted d-flex align-items-center gap-1 mt-1" style={{ fontSize: '0.55rem', fontWeight: '500' }}>
+                            <FaRegClock style={{ fontSize: '0.55rem' }} /> {ev.time}
+                          </div>
+                        </div>
                       </SwiperSlide>
                     ))}
                   </Swiper>
@@ -686,7 +695,7 @@ function LandingPageContent() {
 
           </Col>
         </Row>
-      </Container>
+      </div>
 
       {/* Full-Width: Uploaded Photos By Members */}
       <div className="px-4 py-4 border-bottom" style={{ backgroundColor: '#ffffff', borderColor: 'rgba(0,0,0,0.08)' }}>
@@ -737,8 +746,8 @@ function LandingPageContent() {
               <SwiperSlide key={index}>
                 <motion.div 
                   whileHover={{ scale: 1.04, y: -2 }} 
-                  className="rounded-3 overflow-hidden border shadow-sm" 
-                  style={{ height: '150px', borderColor: 'rgba(0,0,0,0.08)', cursor: 'pointer' }}
+                  className="rounded-0 overflow-hidden border shadow-sm" 
+                  style={{ height: '150px', borderColor: 'rgba(0,0,0,0.08)', cursor: 'pointer', borderRadius: '0px' }}
                   onClick={() => router.push('/login')}
                 >
                   <img src={photo} alt="Member upload" className="w-100 h-100" style={{ objectFit: 'cover' }} />
@@ -802,7 +811,7 @@ function LandingPageContent() {
           >
             {membersList.map((member, idx) => (
               <SwiperSlide key={idx}>
-                <Card className="glass-card text-dark border overflow-hidden shadow-sm h-100 d-flex flex-column align-items-center text-center position-relative pb-3" style={{ borderColor: 'rgba(0,0,0,0.06)' }}>
+                <Card className="glass-card text-dark border overflow-hidden shadow-sm h-100 d-flex flex-column align-items-center text-center position-relative pb-3" style={{ borderColor: 'rgba(0,0,0,0.06)', borderRadius: '0px' }}>
                   {/* Top Cover Banner */}
                   <div style={{
                     height: '60px',
@@ -864,11 +873,12 @@ function LandingPageContent() {
                       onClick={() => router.push('/login')} 
                       variant="primary" 
                       size="sm" 
-                      className="w-100 rounded-pill mt-auto fw-bold py-1.5 d-flex align-items-center justify-content-center gap-1 shadow-sm"
+                      className="w-100 rounded-0 mt-auto fw-bold py-1.5 d-flex align-items-center justify-content-center gap-1 shadow-sm member-connect-btn"
                       style={{ 
                         fontSize: '0.8rem', 
                         background: 'linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)',
-                        border: 'none'
+                        border: 'none',
+                        borderRadius: '0px'
                       }}
                     >
                       Connect
@@ -886,6 +896,7 @@ function LandingPageContent() {
           </span>
         </div>
       </div>
+    </div>
 
       {/* Footer */}
       <footer id="contact" className="py-5 mt-auto border-top text-light" style={{ backgroundColor: '#0f172a', borderColor: 'rgba(255,255,255,0.06)' }}>
@@ -894,8 +905,7 @@ function LandingPageContent() {
             {/* Column 1: Brand Info */}
             <Col xs={12} md={6} lg={4}>
               <div className="d-flex align-items-center gap-2 mb-3">
-                <FaCompass className="text-info fs-3" />
-                <span className="fw-bold text-white fs-4 font-heading">IncredibleBD</span>
+                <img src="/logo/logo.png" alt="IncredibleBD Logo" style={{ height: '36px', width: 'auto', objectFit: 'contain' }} />
               </div>
               <p className="small text-secondary mb-4" style={{ maxWidth: '300px' }}>
                 Discover the raw beauty of Bangladesh. Explore top destinations, local festivals, and connect with fellow travellers across the country.
